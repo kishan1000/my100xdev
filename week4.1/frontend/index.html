@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intrest calculator</title>
+</head>
+<script>
+    let timeout;
+    async function debouncedCalculateInterest(){
+        clearTimeout(timeout);
+        timeout = setTimeout(()=>{
+            calculateInterest();
+        }, 2000);
+    }
+
+    async function calculateInterest() {
+        const principal = document.getElementById("principal").value;
+        const rate = document.getElementById("rate").value;
+        const time = document.getElementById("time").value;
+
+        // localhost:3000
+        const response = await fetch(`http://localhost:3000/interest?principal=${principal}&rate=${rate}&time=${time}`);
+        const result = await response.json();
+
+        console.log(result.interest, result.total);
+
+        document.getElementById("interest").innerHTML = result.interest;
+        document.getElementById("total").innerHTML = result.total;
+    }
+</script>
+
+<body>
+    <div>
+        <input oninput="debouncedCalculateInterest()" id="principal" type="text" placeholder="Principal"> <br> <br>
+        <input oninput="debouncedCalculateInterest()" id="rate" type="text" placeholder="Rate"> <br><br>
+        <input oninput="debouncedCalculateInterest()" id="time" type="text" placeholder="Time"> <br><br>
+        Intrest: <span id="interest"></span> <br><br>
+        Total: <span id="total"></span>
+    </div>
+</body>
+
+</html>
