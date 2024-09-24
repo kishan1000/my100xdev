@@ -16,12 +16,15 @@ function App() {
       })
   }, [])
 
-  useEffect(()=>{
-    fetch(`http://localhost:3000/todo?id=${todoId}`).then((res)=>{
-      res.json().then((json)=>{
-        setSingleTodo(json)
+  useEffect(() => {
+    if (todoId) {
+      fetch(`http://localhost:3000/todo?id=${todoId}`).then((res) => {
+        res.json().then((json) => {
+          console.log(`http://localhost:3000/todo?id=${todoId}`, " : ", json);
+          setSingleTodo(json)
+        })
       })
-    })
+    }
   }, [todoId])
 
   return (
@@ -38,7 +41,7 @@ function App() {
 }
 
 function Todo({ title, description, completed }) {
-  if(!title) return <></>;
+  if (!title) return <></>;
   let completedText = "";
   if (completed) {
     completedText = "Completed";
@@ -60,7 +63,7 @@ function TodoForm({ setTodoId }) {
   }
   return (
     <div>
-      <input type="text" name="todoid" id="todoid" onKeyDownCapture={todoformhandler}/>
+      <input type="text" name="todoid" id="todoid" onKeyDownCapture={todoformhandler} />
       <button onClick={todoformhandler}>Get Todo</button>
     </div>
   )
